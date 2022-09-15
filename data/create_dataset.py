@@ -6,7 +6,7 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 
 import numpy as np
 import os
-from disentanglement_lib.data.ground_truth import dsprites, norb, cars3d, shapes3d
+from disentanglement_lib1.data.ground_truth import dsprites, norb, cars3d, shapes3d
 
 from absl import app
 from absl import flags
