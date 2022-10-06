@@ -3,7 +3,6 @@ numpy
 pandas
 scipy
 tensorflow
-tensorflow-gpu
 tensorflow_probability
 gin-config
 matplotlib
