@@ -139,7 +139,7 @@ def main(argv):
         val_split = 8000
     elif FLAGS.data_type == "dsprites":
         if FLAGS.data_dir == "":
-            FLAGS.data_dir = "data/dsprites/dsprites.npz"
+            FLAGS.data_dir = "data/dsprites/dsprites.npz" #fix as needed
         data_dim = 4096
         time_length = FLAGS.time_len
         decoder = GaussianDecoder
@@ -324,7 +324,7 @@ def main(argv):
         saver = tf.compat.v1.train.Checkpoint(optimizer=optimizer, encoder=model.encoder.net, decoder=model.decoder.net,
                                               optimizer_step=tf.compat.v1.train.get_or_create_global_step())
 
-    summary_writer = tf.contrib.summary.create_file_writer(outdir, flush_millis=10000)
+    summary_writer = tf.summary.create_file_writer(outdir, flush_millis=10000) #change tf 1 to 2
 
     if FLAGS.num_steps == 0:
         num_steps = FLAGS.num_epochs * len(x_train_miss) // FLAGS.batch_size
@@ -346,8 +346,9 @@ def main(argv):
     t0_global = time.time()
     t0 = time.time()
 
-    with summary_writer.as_default(), tf.contrib.summary.always_record_summaries():
+    with summary_writer.as_default(): #, tf.contrib.summary.always_record_summaries():
         for i, (x_seq, m_seq) in enumerate(tf_x_train_miss.take(num_steps)):
+            tf.compat.v1.summary.all_v2_summary_ops()
             try:
                 with tf.GradientTape() as tape:
                     tape.watch(trainable_vars)
@@ -369,9 +370,9 @@ def main(argv):
                     print("Train loss = {:.3f} | NLL = {:.3f} | KL = {:.3f}".format(loss, nll, kl))
 
                     saver.save(checkpoint_prefix)
-                    tf.contrib.summary.scalar("loss_train", loss)
-                    tf.contrib.summary.scalar("kl_train", kl)
-                    tf.contrib.summary.scalar("nll_train", nll)
+                    tf.compat.v1.summary.scalar("loss_train", loss)
+                    tf.compat.v1.summary.scalar("kl_train", kl)
+                    tf.compat.v1.summary.scalar("nll_train", nll)
 
                     # Validation loss
                     x_val_batch, m_val_batch = tf_x_val_miss.get_next()
@@ -379,9 +380,9 @@ def main(argv):
                     losses_val.append(val_loss.numpy())
                     print("Validation loss = {:.3f} | NLL = {:.3f} | KL = {:.3f}".format(val_loss, val_nll, val_kl))
 
-                    tf.contrib.summary.scalar("loss_val", val_loss)
-                    tf.contrib.summary.scalar("kl_val", val_kl)
-                    tf.contrib.summary.scalar("nll_val", val_nll)
+                    tf.compat.v1.summary.scalar("loss_val", val_loss)
+                    tf.compat.v1.summary.scalar("kl_val", val_kl)
+                    tf.compat.v1.summary.scalar("nll_val", val_nll)
 
                     t0 = time.time()
             except KeyboardInterrupt:
