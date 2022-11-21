@@ -71,6 +71,7 @@ def main(argv, model_dir=None):
     z_reshape = np.reshape(np.transpose(z, (0,2,1)),(z_shape[0]*z_shape[2],z_shape[1]))
     c_reshape = np.reshape(np.transpose(c, (0,2,1)),(c_shape[0]*c_shape[2],c_shape[1]))
     c_reshape = c_reshape[:z_reshape.shape[0], ...]
+    z_reshape = z_reshape[:c_reshape.shape[0]] #added because sample size must be the same
 
     # Experimental physionet rescaling
     if FLAGS.data_type_dci == 'physionet':
