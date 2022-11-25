@@ -30,7 +30,13 @@ with the state-of-the-art model for disentanglement that can exploit the structu
 1. Clone or download this repo. `cd` yourself to its root directory.
 2. Grab or build a working python enviromnent. [Anaconda](https://www.anaconda.com/) works fine.
 3. Install dependencies, using `pip install -r requirements.txt`
-4. Clone or download the disentanglement_lib and add its root directory to your `PYTHONPATH`.
+4. Clone or download the disentanglement_lib and add its root directory to your `PYTHONPATH`. Or if you perfer to have disentanglement as a module after cloning the disentanglement_lib navigate to the repository (with `cd disentanglement_lib`) and run
+```
+pip install .[tf_gpu]
+```
+(or `pip install .[tf]` for TensorFlow without GPU support, in Compute Canada this is the perferable command).
+This should install the package and all the required dependencies.
+  
 5. Download data:
     1. Synthetic data: First, download the underlying factors of variation by running `data/load_{dsprites, smallnorb, cars3d, shapes3d}.sh`.
     Then synthesize the actual data set from these factors by running `python data/create_dataset.py --data_type {dsprites, smallnorb, cars3d, shapes3d}`.
@@ -41,6 +47,7 @@ with the state-of-the-art model for disentanglement that can exploit the structu
     `data/load_hirid_assign.sh`.
 6. Run the command `python run_experiment.py --model_type dgp-vae --data_type {dsprites, smallnorb, cars3d, shapes3d, hirid} 
 --exp_name <your_name> ...`
+7. if running dpsrites download the npz file from https://github.com/deepmind/dsprites-dataset (otherwise you will recieve and error from train.py)
 
  
 
